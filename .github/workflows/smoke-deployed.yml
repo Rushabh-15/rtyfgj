@@ -1,13 +1,15 @@
 name: Smoke test (deployed app)
 
 # Runs the Playwright smoke test against the live app:
-# - after each successful Vercel production deployment (Vercel's GitHub app sends a repository_dispatch event),
+# - when Vercel reports a successful deployment of a commit on main (Vercel posts a commit status, context "Vercel";
+#   its deployment_status and repository_dispatch events are also accepted if the project sends them),
 # - on demand, with an optional URL,
 # - daily, to catch a broken deployment nobody has opened.
-# The production domain comes from the repository variable DEPLOYED_URL (Settings > Variables), because Vercel's
-# per-deployment URLs sit behind Deployment Protection while the production domain is public.
+# The URL tested is the production domain in the repository variable DEPLOYED_URL (Settings > Variables), because
+# Vercel's per-deployment URLs sit behind Deployment Protection while the production domain is public.
 
 on:
+  status:
   repository_dispatch:
     types: [vercel.deployment.success]
   workflow_dispatch:
@@ -22,7 +24,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: smoke-deployed-${{ github.event.client_payload.git.sha || github.run_id }}
+  group: smoke-deployed-${{ github.event.sha || github.event.client_payload.git.sha || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -30,12 +32,13 @@ jobs:
     if: >-
       (github.event_name == 'workflow_dispatch') ||
       (github.event_name == 'schedule' && vars.DEPLOYED_URL != '') ||
+      (github.event_name == 'status' && github.event.context == 'Vercel' && github.event.state == 'success' &&
+       contains(github.event.branches.*.name, 'main')) ||
       (github.event_name == 'repository_dispatch' && github.event.client_payload.environment == 'production')
     runs-on: ubuntu-24.04
     env:
       BASE_URL: ${{ inputs.url || vars.DEPLOYED_URL }}
-      DEPLOYMENT_URL: ${{ github.event.client_payload.url }}
-      DEPLOYED_SHA: ${{ github.event.client_payload.git.sha || github.sha }}
+      DEPLOYED_SHA: ${{ github.event.sha || github.event.client_payload.git.sha || github.sha }}
     steps:
       - name: Check a URL is configured
         run: |
@@ -43,12 +46,12 @@ jobs:
             echo "::error::Set the DEPLOYED_URL repository variable or pass a URL."
             exit 1
           fi
-          echo "Testing $BASE_URL (deployment ${DEPLOYMENT_URL:-n/a}, commit $DEPLOYED_SHA)"
+          echo "Testing $BASE_URL after the deployment of $DEPLOYED_SHA"
 
-      # repository_dispatch runs on the default branch's latest commit; test with the deployed commit's spec instead.
+      # Event-triggered runs start on main's latest commit; test with the deployed commit's spec instead.
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.client_payload.git.sha || github.sha }}
+          ref: ${{ env.DEPLOYED_SHA }}
 
       - uses: actions/setup-node@v7
         with:

@@ -196,10 +196,10 @@ root `Dockerfile` and routes every path to it; the image listens on port 80, Ver
 import the repository at [vercel.com/new](https://vercel.com/new) and accept the detected settings. Every push to
 `main` then deploys to production.
 
-When a production deployment succeeds, Vercel's GitHub app sends a `repository_dispatch` event
-(`vercel.deployment.success`) that runs `smoke-deployed.yml` against the repository variable `DEPLOYED_URL` (Settings →
-Secrets and variables → Actions → Variables), set to the production domain because per-deployment URLs are behind
-Vercel's Deployment Protection.
+When Vercel marks a commit on `main` as deployed (its "Vercel" commit status turns green), `smoke-deployed.yml` runs
+the Playwright smoke test against the repository variable `DEPLOYED_URL` (Settings → Secrets and variables → Actions →
+Variables), set to the production domain because per-deployment URLs are behind Vercel's Deployment Protection. It
+also runs on demand and daily.
 
 **Fallback: Heroku.** `heroku create <app> --stack container`, then push; Heroku builds the same Dockerfile and sets
 `PORT` at runtime.
