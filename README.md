@@ -69,8 +69,8 @@ The deployed app serves the committed snapshot; nothing calls Elexon at request 
 be traced to a file and a hash. The core rule is one pure function, `select_forecasts` in
 `backend/src/windcast/selection.py`: for each half-hour delivery period, take the hourly WINDFOR value that covers it
 from the latest run published **strictly before** the cutoff, ignoring rows whose target hour starts before their own
-publishTime. It is a rule, not "the 07:30 run": when 15 January's 11:30 run never arrived, cutoffs from 12:00 fall back
-to the 09:30 run until a late run appeared at 12:25.
+publishTime. It is a rule, not "the 07:30 run": 15 January's 11:30 run never arrived, so bidding at 12:00 for the 16th
+falls back to the 09:30 run, and from 12:30 the late run published at 12:25 takes over.
 
 API (OpenAPI docs at `/api/docs` on any running copy):
 
