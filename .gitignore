@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+*.tsbuildinfo
+
+# Local data from re-running ingestion (the committed snapshot lives in data/snapshot)
+data/ingest_check/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Vercel
+.vercel/

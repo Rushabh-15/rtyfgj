@@ -1,0 +1,59 @@
+{
+  "generated_by": "browser fetch() in the Claude desktop app browser pane (same requests as scripts/pull_elexon_wind.py)",
+  "generated_at_utc": "2026-10-24T18:06:25.968Z",
+  "notes": [
+    "Each file is the API response body saved unchanged.",
+    "Fetched with fetch() from the Claude desktop app's browser pane on the requester's Mac because the cloud sandbox's network policy blocks data.elexon.co.uk; bodies were moved to the sandbox as gzip+base64 and the decoded files' SHA-256 matched the hash computed in the browser on the original response bytes.",
+    "WINDFOR publishDateTimeFrom/To are both inclusive (tested 2026-10-24); FUELHH settlementDateFrom/To are both inclusive.",
+    "Re-run scripts/pull_elexon_wind.py --compare data/raw/manifest.json to reproduce and check the hashes."
+  ],
+  "requests": [
+    {
+      "name": "windfor",
+      "dataset": "WINDFOR",
+      "file": "WINDFOR_stream_2025-12-30_2026-02-02.json",
+      "method": "GET",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream?publishDateTimeFrom=2025-12-30T00:00:00Z&publishDateTimeTo=2026-02-02T00:00:00Z",
+      "endpoint": "https://data.elexon.co.uk/bmrs/api/v1/datasets/WINDFOR/stream",
+      "params": {
+        "publishDateTimeFrom": "2025-12-30T00:00:00Z",
+        "publishDateTimeTo": "2026-02-02T00:00:00Z"
+      },
+      "request_headers": {
+        "Accept": "application/json"
+      },
+      "requested_at_utc": "2026-10-24T18:06:25.045Z",
+      "completed_at_utc": "2026-10-24T18:06:25.784Z",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "server_date": "Sat, 24 Oct 2026 18:06:25 GMT",
+      "bytes": 2237197,
+      "rows": 19856,
+      "sha256": "8423e6674ad9577117f1909751fcab4064283222b02ce0ba7ef895cf81a93b61"
+    },
+    {
+      "name": "fuelhh_wind",
+      "dataset": "FUELHH",
+      "file": "FUELHH_WIND_stream_2025-12-31_2026-02-02.json",
+      "method": "GET",
+      "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream?settlementDateFrom=2025-12-31&settlementDateTo=2026-02-02&fuelType=WIND",
+      "endpoint": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH/stream",
+      "params": {
+        "settlementDateFrom": "2025-12-31",
+        "settlementDateTo": "2026-02-02",
+        "fuelType": "WIND"
+      },
+      "request_headers": {
+        "Accept": "application/json"
+      },
+      "requested_at_utc": "2026-10-24T18:06:25.794Z",
+      "completed_at_utc": "2026-10-24T18:06:25.968Z",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "server_date": "Sat, 24 Oct 2026 18:06:25 GMT",
+      "bytes": 296082,
+      "rows": 1632,
+      "sha256": "f004130b53ee9dd27b77461a529d48e1421094c4d2fbb4ab4f625f16d3d4f7fc"
+    }
+  ]
+}
