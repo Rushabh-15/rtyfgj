@@ -49,6 +49,11 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["PLR0915", "PLC0415"]
+# Lazy imports keep `windcast` fast to start and keep pandas/DuckDB out of the runtime path.
+"src/windcast/cli.py" = ["PLC0415"]
+# Document generators: one long linear function emitting Markdown lines.
+"src/windcast/report.py" = ["E501", "PLR0915"]
+"src/windcast/validation.py" = ["E501", "PLR0915", "PLC0415"]
 
 [tool.mypy]
 strict = true

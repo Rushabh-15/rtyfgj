@@ -1,0 +1,29 @@
+{
+ "read_with": "fetch() from the Claude desktop app's browser pane (the build sandbox cannot reach api.neso.energy)",
+ "dataset": "NESO Data Portal, Day Ahead Wind Forecast / Historic Day Ahead Wind Forecasts (resource 7524ec65-f782-4258-aaf8-5b926c17b966)",
+ "dataset_page": "https://www.neso.energy/data-portal/day-ahead-wind-forecast",
+ "responses": [
+  {
+   "file": "historic_day_ahead_wind_forecasts_2025-12-31_2026-02-02.json",
+   "url": "https://api.neso.energy/api/3/action/datastore_search_sql?sql=SELECT%20%22Datetime_GMT%22%2C%22Date%22%2C%22Settlement_period%22%2C%22Capacity%22%2C%22Incentive_forecast%22%2C%22Forecast_Timestamp%22%20FROM%20%227524ec65-f782-4258-aaf8-5b926c17b966%22%20WHERE%20%22Date%22%20%3E%3D%20'2025-12-31'%20AND%20%22Date%22%20%3C%3D%20'2026-02-02'%20ORDER%20BY%20%22Datetime_GMT%22",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:02:04.746Z",
+   "bytes": 301691,
+   "sha256": "3fd827e29c0e9323c84c0b1517e7d9245ed3ac554c5d4778a1767104e8cef6f2"
+  }
+ ],
+ "published_metric": [
+  {
+   "value_pct": 4.99,
+   "month": "January 2026",
+   "document": "NESO Monthly Incentives January 2026 Report (Business Plan 3, 2025-26), published 24 February 2026",
+   "url": "https://www.neso.energy/document/377601/download"
+  },
+  {
+   "value_pct": 4.9,
+   "month": "January (previous-year outturn row)",
+   "document": "NESO1 (2026-28) Monthly Reported Metrics Incentives Report, April 2026, published 27 May 2026",
+   "url": "https://www.neso.energy/document/382306/download"
+  }
+ ]
+}

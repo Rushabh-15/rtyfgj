@@ -1,0 +1,293 @@
+{
+ "read_with": "fetch() from https://bmrs.elexon.co.uk in the Claude desktop app's browser pane (the endpoints its 30-minute export and forecast history views call)",
+ "responses": [
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-04T04:00:00Z&PublishDateTimeTo=2026-01-04T04:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:41.122Z",
+   "bytes": 3621,
+   "sha256": "6ccb5d3bf01e6e3b3b4dd33e4432d34aaddd5728294fbb8dd5cc5a9b48877227",
+   "file": "00_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-03T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:41.353Z",
+   "bytes": 10604,
+   "sha256": "2eff84fa3944e872bb094e43d864c2e12191f689e3e2a56fb4b2757062eb281f",
+   "file": "01_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-05T01:00:00Z&PublishDateTimeTo=2026-01-05T01:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:41.679Z",
+   "bytes": 3626,
+   "sha256": "c1fcf505885dbba97de2ad108eb968c8474d2ea34e08a97357293f57b9bc8ffb",
+   "file": "02_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-04T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:41.917Z",
+   "bytes": 10590,
+   "sha256": "99bf1a1d06c123a69571732e3357ceda4e63bf40c098396353b41d0e8262a5dd",
+   "file": "03_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-05T05:00:00Z&PublishDateTimeTo=2026-01-05T05:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:42.204Z",
+   "bytes": 3650,
+   "sha256": "22b5be6b17e3a8748c73666ab691e0f0fe4deb53085bc724bf688ef5c954bbc8",
+   "file": "04_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-07T17:30:00Z&PublishDateTimeTo=2026-01-07T17:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:42.498Z",
+   "bytes": 3643,
+   "sha256": "b486c51c395fbc8ff27ebe9b57fdd0345c306488f5f7fe448197e3b6d0b436eb",
+   "file": "05_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-06T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:42.805Z",
+   "bytes": 10571,
+   "sha256": "9cf714816988236b44e49758866fb9b8114b42d62c415dfd1d546520faa5d532",
+   "file": "06_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-08T03:00:00Z&PublishDateTimeTo=2026-01-08T03:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:43.113Z",
+   "bytes": 3621,
+   "sha256": "f2b7d639c2983831b70e094071524cf02d678a89d1e626653852150ebef094a5",
+   "file": "07_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-07T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:43.346Z",
+   "bytes": 10588,
+   "sha256": "784c1597129c8f4142f5e0d73afdf0839e24ce72e3c9b97d491a27203deebbb6",
+   "file": "08_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-10T08:00:00Z&PublishDateTimeTo=2026-01-10T08:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:43.624Z",
+   "bytes": 3643,
+   "sha256": "a8380668e518192cc19bb0c9a059c9c179a467e7777e38f87a4a930db227f736",
+   "file": "09_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-09T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:43.931Z",
+   "bytes": 10598,
+   "sha256": "1e3e1d3c3adffee4179f9692738370da51eb2adffed3c1af31755a845ede9d02",
+   "file": "10_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-11T13:30:00Z&PublishDateTimeTo=2026-01-11T13:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:44.191Z",
+   "bytes": 3634,
+   "sha256": "cc301790895b1c1c8106633cbf6f3987f573b0cc8578c67fde90e36d3a01cd81",
+   "file": "11_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-10T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:44.445Z",
+   "bytes": 10600,
+   "sha256": "bdfaffca1b7557df40a56ca148eb7cc82e373791fb89117370d467dd3b309973",
+   "file": "12_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-16T10:30:00Z&PublishDateTimeTo=2026-01-16T10:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:44.751Z",
+   "bytes": 3641,
+   "sha256": "7e2c7ac1a6ad838530db2a680b5dfd8e8ad59de06623b71c215895a6d3244525",
+   "file": "13_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-15T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:45.058Z",
+   "bytes": 10562,
+   "sha256": "82daf88e98e9060c82c0056e7eb687e916ccd4eebdc28f32ee22239339795f27",
+   "file": "14_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-17T11:30:00Z&PublishDateTimeTo=2026-01-17T11:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:45.319Z",
+   "bytes": 3641,
+   "sha256": "45dcdf117d809e6e8092ee1a4378e3bd759b82ec218c59795dca2f216c841eab",
+   "file": "15_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-16T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:45.570Z",
+   "bytes": 10543,
+   "sha256": "13a4c0c2b0866d196598a8a31dcc563b5a873b48257fbafc083867ef7510a83d",
+   "file": "16_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-18T03:30:00Z&PublishDateTimeTo=2026-01-18T03:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:45.877Z",
+   "bytes": 3622,
+   "sha256": "cef74311e771ee0d12e65301ad4b46abbe9f20b2e5c56dd69647fb8d68c93f11",
+   "file": "17_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-17T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:46.184Z",
+   "bytes": 10543,
+   "sha256": "396136980a414209586d55823b256898b5dd8e8381e49e48c39f83d4674f941e",
+   "file": "18_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-18T14:00:00Z&PublishDateTimeTo=2026-01-18T14:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:46.467Z",
+   "bytes": 3639,
+   "sha256": "55100358055f71790639032640bb22ecae45b53c94696c7a554f5c2554d3c59c",
+   "file": "19_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-19T10:00:00Z&PublishDateTimeTo=2026-01-19T10:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:46.722Z",
+   "bytes": 3639,
+   "sha256": "73147267dea9a43fd6931df80f871e1f86c77fa95ed89fd20b5984e078adde20",
+   "file": "20_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-18T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:46.954Z",
+   "bytes": 10564,
+   "sha256": "98b9974bbdfc3a8effe5cd2a6f1c039fa2cb52332e5e3733fb33b4c6941b2eee",
+   "file": "21_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-20T01:30:00Z&PublishDateTimeTo=2026-01-20T01:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:47.223Z",
+   "bytes": 3621,
+   "sha256": "45e5da5d23b6d78351a0397f9392db23632f6bbb6166449640f1ebcabe11090d",
+   "file": "22_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-19T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:47.451Z",
+   "bytes": 10593,
+   "sha256": "be9ba41f483d07ed39218cb87217204cf6c0332043c38b930ea3851cb7193850",
+   "file": "23_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-20T19:00:00Z&PublishDateTimeTo=2026-01-20T19:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:47.720Z",
+   "bytes": 3641,
+   "sha256": "abf657545e844df7b4bf842de8ccb2fb2a7c2b2658f8926876da8d8aaba1c387",
+   "file": "24_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-20T21:30:00Z&PublishDateTimeTo=2026-01-20T21:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:48.028Z",
+   "bytes": 3633,
+   "sha256": "952d51367e8625ecf404e171ff25b96ebd28926d59d32ad356c7fbb9d2be0519",
+   "file": "25_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-26T08:30:00Z&PublishDateTimeTo=2026-01-26T08:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:48.337Z",
+   "bytes": 3640,
+   "sha256": "12ca2ae162915ebdc74ba834da51dba94f9f5794a9d22a12bca7b622b6039a95",
+   "file": "26_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-25T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:48.642Z",
+   "bytes": 10605,
+   "sha256": "6b72bb15b38f1fa91364d2bda7e0f7ff214ea95af9b12a35e50458c98e0a5da1",
+   "file": "27_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-28T15:30:00Z&PublishDateTimeTo=2026-01-28T15:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:48.949Z",
+   "bytes": 3638,
+   "sha256": "d647dcb036b19475aca9ae11f9230033bec38b6d308f99c705d5a8ea72d837fe",
+   "file": "28_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-27T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:49.256Z",
+   "bytes": 10607,
+   "sha256": "a70783c9b4586efbff1fe2e302782ffd6c138e77cfc9ebce49fdaf1b9695206d",
+   "file": "29_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-30T20:00:00Z&PublishDateTimeTo=2026-01-30T20:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:49.565Z",
+   "bytes": 3642,
+   "sha256": "8c7b7a10331ca778d694da5be998b3d035efdf2ad4269eb6d6b98ea6b0640e82",
+   "file": "30_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-29T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:49.871Z",
+   "bytes": 10608,
+   "sha256": "d09f1ca7e69ea0b229fdd387b68064782d6fc981deb8f6621b71b9ed5bcddcd7",
+   "file": "31_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-01-31T09:30:00Z&PublishDateTimeTo=2026-01-31T09:30:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:50.179Z",
+   "bytes": 3641,
+   "sha256": "29d800d8801f571a7b7f4150d29945565d11e66918a594dbd3776800ff83d2ab",
+   "file": "32_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-30T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:50.485Z",
+   "bytes": 10596,
+   "sha256": "599c424934b789068e807a3fb0ebb262082ffeea54675a0012ee4b28868785f9",
+   "file": "33_windfor_history.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/datasets/FUELHH?format=json&PublishDateTimeFrom=2026-02-01T16:00:00Z&PublishDateTimeTo=2026-02-01T16:00:00Z",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:50.792Z",
+   "bytes": 3644,
+   "sha256": "f3bd3c3f5e7eef3feb3162dd14d7b538732a73a0e7a6a2ab780f83b8e3c04e7a",
+   "file": "34_fuelhh.json"
+  },
+  {
+   "url": "https://data.elexon.co.uk/bmrs/api/v1/forecast/generation/wind/history?publishTime=2026-01-31T07:30:00Z&format=json",
+   "status": 200,
+   "requested_at_utc": "2026-10-25T04:10:51.099Z",
+   "bytes": 10579,
+   "sha256": "2707c61b92c1fdf232291c9b93e62e3960121cf1a8008acc861a48382d2946d9",
+   "file": "35_windfor_history.json"
+  }
+ ]
+}

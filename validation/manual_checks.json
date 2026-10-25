@@ -1,0 +1,23 @@
+{
+  "note": "Checks that need the outside world. Each entry records what was run, when and the outcome.",
+  "checks": [
+    {
+      "name": "Snapshot re-pull is byte-identical",
+      "status": "PASS",
+      "result": "Both stream requests re-run on 2026-10-25 04:12 UTC: WINDFOR 19,856 rows sha256 8423e667…, FUELHH WIND 1,632 rows sha256 f004130b… — identical to the manifest of 2026-10-24",
+      "method": "Same URLs as `windcast ingest`, fetched from a browser on bmrs.elexon.co.uk (the build sandbox cannot reach data.elexon.co.uk)"
+    },
+    {
+      "name": "CI green from a fresh clone",
+      "status": "PENDING",
+      "result": "Waiting for the GitHub repository",
+      "method": "Fresh `git clone` of the public repo, then the GitHub Actions run on that commit"
+    },
+    {
+      "name": "Submitted URLs open without signing in",
+      "status": "PENDING",
+      "result": "Waiting for the repository and the Vercel deployment",
+      "method": "Unauthenticated requests (no cookies) to the repo and app URLs"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ from windcast.evaluation import ActualIndex, PeriodResult
 from windcast.metrics import ErrorStats, error_stats, mean, pearson, quantile
 from windcast.selection import is_forward_looking, source_hour
 from windcast.snapshot import ForecastRow
-from windcast.timeutils import HALF_HOUR, LONDON, delivery_day_of, delivery_day_periods
+from windcast.timeutils import HALF_HOUR, LONDON, delivery_day_periods
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,13 +124,12 @@ def buffer_backtest(
         q = target / 100
         buffer_mw = quantile(fit_errors, q)
         rng = random.Random(seed + target)
-        day_list = list(test_days)
+        covered_by_day = [sum(1 for e in test_by_day[d] if e <= buffer_mw) for d in test_days]
+        size_by_day = [len(test_by_day[d]) for d in test_days]
         draws = []
         for _ in range(resamples):
-            sample = [rng.choice(day_list) for _ in day_list]
-            covered = sum(sum(1 for e in test_by_day[d] if e <= buffer_mw) for d in sample)
-            total = sum(len(test_by_day[d]) for d in sample)
-            draws.append(covered / total)
+            sample = [rng.randrange(len(test_days)) for _ in test_days]
+            draws.append(sum(covered_by_day[i] for i in sample) / sum(size_by_day[i] for i in sample))
         draws.sort()
         results.append(
             BufferResult(
@@ -245,7 +244,12 @@ class VintageSummary:
     grid: list[GridCell]  # 6-hour lead buckets x UK hour
     lead_effect_mw: float  # range of lead-bucket means of the grid (hours balanced)
     hour_effect_mw: float  # range of hour means of the grid (leads balanced)
+    effect_leads_h: tuple[int, int]  # lead range of the complete grid rows used for the two effects
     short_lead_lag_scan: list[LagPoint]  # leads under 6 h, where timing errors are smallest
+
+
+def _width(buckets: Sequence[tuple[int, int]]) -> int:
+    return buckets[0][1] - buckets[0][0]
 
 
 def _uk_hour(t: dt.datetime) -> int:
@@ -313,9 +317,6 @@ def summarise_vintages(
         grid=grid,
         lead_effect_mw=(max(lead_means) - min(lead_means)) if lead_means else math.nan,
         hour_effect_mw=(max(hour_means) - min(hour_means)) if hour_means else math.nan,
+        effect_leads_h=(min(complete_leads), max(complete_leads) + _width(grid_buckets)) if complete_leads else (0, 0),
         short_lead_lag_scan=short_scan,
     )
-
-
-def day_of(period_start: dt.datetime) -> dt.date:
-    return delivery_day_of(period_start)
