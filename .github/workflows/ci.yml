@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          version: "0.11.32"
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+
+      - name: Install (locked)
+        run: uv sync --frozen --all-groups
+
+      - name: Lint and format
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Type check (mypy strict)
+        run: uv run mypy
+
+      - name: Data contracts on the committed snapshot
+        run: uv run windcast check
+
+      - name: Tests (unit, property, golden day, three-way equivalence, API)
+        run: uv run pytest -q
+
+      - name: Served tables rebuild byte-for-byte from the snapshot
+        run: |
+          uv run windcast precompute --out "$RUNNER_TEMP/derived"
+          diff -r ../data/derived "$RUNNER_TEMP/derived"
+
+      - name: Reports match the data
+        run: |
+          uv run windcast report --out "$RUNNER_TEMP/analysis.md"
+          diff ../docs/analysis.md "$RUNNER_TEMP/analysis.md"
+          uv run windcast validate --out "$RUNNER_TEMP/validation.md"
+          diff ../docs/validation.md "$RUNNER_TEMP/validation.md"
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: API types match the committed OpenAPI schema
+        run: npm run check:types
+
+      - name: Tests (against real API responses)
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  image:
+    name: Image and smoke test
+    needs: [backend, frontend]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build the image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          tags: windcast:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Data contracts inside the image
+        run: docker run --rm windcast:ci windcast check
+
+      - name: Start the container
+        run: |
+          docker run -d --name app -p 8000:80 windcast:ci
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8000/api/health; then echo; exit 0; fi
+            sleep 1
+          done
+          docker logs app
+          exit 1
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Playwright
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Smoke test the running image (desktop and phone)
+        working-directory: frontend
+        env:
+          BASE_URL: http://127.0.0.1:8000
+        run: npx playwright test
+
+      - name: Record the tested image
+        run: |
+          {
+            echo "### Tested image"
+            echo
+            echo "- Commit: \`$GITHUB_SHA\`"
+            echo "- Image ID: \`$(docker image inspect windcast:ci --format '{{.Id}}')\`"
+            echo "- Size: $(docker image inspect windcast:ci --format '{{.Size}}' | numfmt --to=iec)"
+            echo "- Container health: $(docker inspect app --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}n/a{{end}}')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Container logs
+        if: failure()
+        run: docker logs app || true
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: frontend/playwright-report
+          retention-days: 7

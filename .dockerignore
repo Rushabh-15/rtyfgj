@@ -1,0 +1,18 @@
+# Only what the Dockerfile copies needs to be in the build context.
+**/node_modules
+**/.venv
+**/__pycache__
+**/.mypy_cache
+**/.pytest_cache
+**/.ruff_cache
+**/.hypothesis
+frontend/dist
+frontend/test-results
+frontend/playwright-report
+data/derived
+data/ingest_check
+validation
+docs
+.git
+.github
+.vercel

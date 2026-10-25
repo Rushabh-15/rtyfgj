@@ -1,0 +1,4 @@
+# Fallback host: Heroku's container stack builds the same Dockerfile and sets PORT at runtime.
+build:
+  docker:
+    web: Dockerfile

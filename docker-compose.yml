@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    image: windcast:local
+    ports:
+      - "8000:80" # http://localhost:8000
+    environment:
+      # Uncomment to apply each hourly forecast to the half-hours either side of its label instead.
+      # WINDCAST_ALIGNMENT_SHIFT_MINUTES: "-30"
+      PORT: "80"
+    restart: unless-stopped

@@ -1,0 +1,66 @@
+name: Smoke test (deployed app)
+
+# Runs the Playwright smoke test against the live app:
+# - after each successful Vercel production deployment (Vercel's GitHub integration reports deployment status),
+# - on demand, with an optional URL,
+# - daily, to catch a broken deployment nobody has opened.
+# The production domain comes from the repository variable DEPLOYED_URL (Settings > Variables), because Vercel's
+# per-deployment URLs sit behind Deployment Protection while the production domain is public.
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL to test (default: the DEPLOYED_URL repository variable)"
+        required: false
+  schedule:
+    - cron: "17 6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: >-
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event_name == 'schedule' && vars.DEPLOYED_URL != '') ||
+      (github.event_name == 'deployment_status' &&
+       github.event.deployment_status.state == 'success' &&
+       startsWith(github.event.deployment.environment, 'Production'))
+    runs-on: ubuntu-24.04
+    env:
+      BASE_URL: ${{ inputs.url || vars.DEPLOYED_URL || github.event.deployment_status.environment_url }}
+    steps:
+      - name: Check a URL is configured
+        run: |
+          if [ -z "$BASE_URL" ]; then
+            echo "::error::Set the DEPLOYED_URL repository variable or pass a URL."
+            exit 1
+          fi
+          echo "Testing $BASE_URL"
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Playwright
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Smoke test (desktop and phone)
+        working-directory: frontend
+        run: npx playwright test
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-deployed
+          path: frontend/playwright-report
+          retention-days: 7
