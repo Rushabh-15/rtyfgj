@@ -1,11 +1,11 @@
 {
-  "generated_by": "browser fetch() in the Claude desktop app browser pane (same requests as scripts/pull_elexon_wind.py)",
+  "generated_by": "browser fetch() in the Claude desktop app browser pane (same requests as windcast ingest)",
   "generated_at_utc": "2026-10-24T18:06:25.968Z",
   "notes": [
     "Each file is the API response body saved unchanged.",
     "Fetched with fetch() from the Claude desktop app's browser pane on the requester's Mac because the cloud sandbox's network policy blocks data.elexon.co.uk; bodies were moved to the sandbox as gzip+base64 and the decoded files' SHA-256 matched the hash computed in the browser on the original response bytes.",
     "WINDFOR publishDateTimeFrom/To are both inclusive (tested 2026-10-24); FUELHH settlementDateFrom/To are both inclusive.",
-    "Re-run scripts/pull_elexon_wind.py --compare data/raw/manifest.json to reproduce and check the hashes."
+    "Re-run make ingest to reproduce and check the hashes."
   ],
   "requests": [
     {
