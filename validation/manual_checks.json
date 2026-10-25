@@ -9,14 +9,14 @@
     },
     {
       "name": "CI green from a fresh clone",
-      "status": "PENDING",
-      "result": "Waiting for the GitHub repository",
+      "status": "PASS",
+      "result": "GitHub Actions on the public repo, commit f25c194 (run 40178511867): backend, frontend, and image build with the Playwright smoke test against the container all green, as on the previous commit d3503c7 (run 40178016783). `scripts/ci_local.sh` in a fresh clone of github.com/Rushabh-15/rtyfgj at f25c194 passed every step on 2026-10-25 08:57 UTC",
       "method": "Fresh `git clone` of the public repo, then the GitHub Actions run on that commit"
     },
     {
       "name": "Submitted URLs open without signing in",
       "status": "PENDING",
-      "result": "Waiting for the repository and the Vercel deployment",
+      "result": "Repository page, README and raw files return 200 to requests without cookies (2026-10-25 08:58 UTC); waiting for the Vercel deployment",
       "method": "Unauthenticated requests (no cookies) to the repo and app URLs"
     }
   ]
