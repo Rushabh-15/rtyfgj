@@ -1,14 +1,15 @@
 name: Smoke test (deployed app)
 
 # Runs the Playwright smoke test against the live app:
-# - after each successful Vercel production deployment (Vercel's GitHub integration reports deployment status),
+# - after each successful Vercel production deployment (Vercel's GitHub app sends a repository_dispatch event),
 # - on demand, with an optional URL,
 # - daily, to catch a broken deployment nobody has opened.
 # The production domain comes from the repository variable DEPLOYED_URL (Settings > Variables), because Vercel's
 # per-deployment URLs sit behind Deployment Protection while the production domain is public.
 
 on:
-  deployment_status:
+  repository_dispatch:
+    types: [vercel.deployment.success]
   workflow_dispatch:
     inputs:
       url:
@@ -20,17 +21,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: smoke-deployed-${{ github.event.client_payload.git.sha || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   smoke:
     if: >-
       (github.event_name == 'workflow_dispatch') ||
       (github.event_name == 'schedule' && vars.DEPLOYED_URL != '') ||
-      (github.event_name == 'deployment_status' &&
-       github.event.deployment_status.state == 'success' &&
-       startsWith(github.event.deployment.environment, 'Production'))
+      (github.event_name == 'repository_dispatch' && github.event.client_payload.environment == 'production')
     runs-on: ubuntu-24.04
     env:
-      BASE_URL: ${{ inputs.url || vars.DEPLOYED_URL || github.event.deployment_status.environment_url }}
+      BASE_URL: ${{ inputs.url || vars.DEPLOYED_URL }}
+      DEPLOYMENT_URL: ${{ github.event.client_payload.url }}
+      DEPLOYED_SHA: ${{ github.event.client_payload.git.sha || github.sha }}
     steps:
       - name: Check a URL is configured
         run: |
@@ -38,9 +43,12 @@ jobs:
             echo "::error::Set the DEPLOYED_URL repository variable or pass a URL."
             exit 1
           fi
-          echo "Testing $BASE_URL"
+          echo "Testing $BASE_URL (deployment ${DEPLOYMENT_URL:-n/a}, commit $DEPLOYED_SHA)"
 
+      # repository_dispatch runs on the default branch's latest commit; test with the deployed commit's spec instead.
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.client_payload.git.sha || github.sha }}
 
       - uses: actions/setup-node@v7
         with:

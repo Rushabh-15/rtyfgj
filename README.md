@@ -4,7 +4,8 @@ The GB wind forecast a day-ahead trading desk had when its bid went in, set agai
 purchase decisions made in January 2026. Data: Elexon Insights WINDFOR (wind generation forecast) and FUELHH
 (half-hourly generation outturn, fuel type WIND), nothing else.
 
-**App:** _Vercel URL added after the first deployment (see [Deployment](#deployment))_
+**App:** https://rtyfgj.vercel.app (opens on the day view; the second tab is the error and buffer view. The first
+request after a quiet spell can take a few seconds while the container starts.)
 
 **Headline, 09:00 UK cutoff on the day before delivery.** The forecast in use ran **1,749 MW above outturn on
 average** (MAE 2,038 MW, RMSE 2,502 MW); wind fell short of it in 85% of half-hours. A buffer of **4,233 MW** held
@@ -165,9 +166,10 @@ Flagged while building; each is handled as described, and none changes the defau
 7. **"Compare 20 random periods with the Elexon website."** The website's wind page shows FUELINST five-minute data,
    not FUELHH, so the check reads the endpoints behind the site's 30-minute export and forecast-history views instead.
    All 20 periods match.
-8. **"All URLs open in incognito"** is checked as unauthenticated requests without cookies, plus a manual check. Vercel
-   protects preview and per-deployment URLs by default, so only the production domain is public; that is the URL to
-   submit.
+8. **"All URLs open in incognito"** is checked with requests that carry no cookies and with the Playwright smoke test,
+   whose fresh browser contexts are the automated equivalent of a private window. Vercel protects preview and
+   per-deployment URLs by default, so only the production domain, https://rtyfgj.vercel.app, is public; that is the
+   URL to submit.
 9. **WINDFOR's documented publication times** (03:30, 05:30, …) differ from the publishTimes in the data (02:30,
    04:30, …); the app uses the data.
 10. **Anonymity.** The repository name is random, but it sits under a personal GitHub account and the app shows no
@@ -189,14 +191,15 @@ Flagged while building; each is handled as described, and none changes the defau
 
 ## Deployment
 
-**Vercel, container runtime.** `vercel.json` defines one service built from the root `Dockerfile` and routes every
-path to it; the image listens on port 80, Vercel's default. To deploy: import the repository at
-[vercel.com/new](https://vercel.com/new) and accept the detected settings. Every push to `main` then deploys to
-production.
+**Vercel, container runtime** (live at https://rtyfgj.vercel.app). `vercel.json` defines one service built from the
+root `Dockerfile` and routes every path to it; the image listens on port 80, Vercel's default. To deploy a copy:
+import the repository at [vercel.com/new](https://vercel.com/new) and accept the detected settings. Every push to
+`main` then deploys to production.
 
-After the first deployment, set the repository variable `DEPLOYED_URL` (Settings → Secrets and variables → Actions →
-Variables) to the production URL, so `smoke-deployed.yml` tests the public domain rather than the protected
-per-deployment URL.
+When a production deployment succeeds, Vercel's GitHub app sends a `repository_dispatch` event
+(`vercel.deployment.success`) that runs `smoke-deployed.yml` against the repository variable `DEPLOYED_URL` (Settings →
+Secrets and variables → Actions → Variables), set to the production domain because per-deployment URLs are behind
+Vercel's Deployment Protection.
 
 **Fallback: Heroku.** `heroku create <app> --stack container`, then push; Heroku builds the same Dockerfile and sets
 `PORT` at runtime.

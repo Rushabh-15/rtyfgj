@@ -15,9 +15,9 @@
     },
     {
       "name": "Submitted URLs open without signing in",
-      "status": "PENDING",
-      "result": "Repository page, README and raw files return 200 to requests without cookies (2026-10-25 08:58 UTC); waiting for the Vercel deployment",
-      "method": "Unauthenticated requests (no cookies) to the repo and app URLs"
+      "status": "PASS",
+      "result": "App https://rtyfgj.vercel.app: the Playwright smoke test (fresh browser contexts with no cookies or sign-in, desktop and phone, 12 tests) passed against it in GitHub Actions run 40185003434 on 2026-10-25 at 10:30 UTC (commit 5223ada); /, /api/health and /api/v1/days/2026-01-16?cutoff=12:00 fetched without cookies return the app, the committed snapshot hashes (8423e667…, f004130b…) and the 15 January fallback to the 09:30 run. Repository page, README and raw files return 200 without cookies. Video links: check signed out before submitting",
+      "method": "Requests without cookies and a fresh Playwright browser context (the automated equivalent of a private window) for the repository and app URLs"
     }
   ]
 }
