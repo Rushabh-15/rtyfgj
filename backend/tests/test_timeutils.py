@@ -54,3 +54,13 @@ def test_parsers() -> None:
     for bad in ("9:00", "09:00:00", "0900"):
         with pytest.raises(ValueError, match="HH:MM"):
             parse_hhmm(bad)
+
+
+def test_settlement_period_numbering() -> None:
+    from windcast.timeutils import settlement_period
+
+    assert settlement_period(dt.datetime(2026, 1, 16, 10, 0, tzinfo=dt.UTC)) == (dt.date(2026, 1, 16), 21)
+    assert settlement_period(dt.datetime(2026, 1, 15, 23, 30, tzinfo=dt.UTC)) == (dt.date(2026, 1, 15), 48)
+    # 25 Oct 2026 has 50 periods: 23:30 GMT is the last one.
+    assert settlement_period(dt.datetime(2026, 10, 25, 23, 30, tzinfo=dt.UTC)) == (dt.date(2026, 10, 25), 50)
+    assert settlement_period(dt.datetime(2026, 7, 1, 9, 0, tzinfo=dt.UTC)) == (dt.date(2026, 7, 1), 21)

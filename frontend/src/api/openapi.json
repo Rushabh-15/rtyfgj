@@ -1,0 +1,1108 @@
+{
+  "components": {
+    "schemas": {
+      "Accuracy": {
+        "additionalProperties": false,
+        "properties": {
+          "alignment_shift_minutes": {
+            "title": "Alignment Shift Minutes",
+            "type": "integer"
+          },
+          "buffer": {
+            "items": {
+              "$ref": "#/components/schemas/BufferRow"
+            },
+            "title": "Buffer",
+            "type": "array"
+          },
+          "by_lead": {
+            "items": {
+              "$ref": "#/components/schemas/Breakdown"
+            },
+            "title": "By Lead",
+            "type": "array"
+          },
+          "by_level": {
+            "items": {
+              "$ref": "#/components/schemas/Breakdown"
+            },
+            "title": "By Level",
+            "type": "array"
+          },
+          "cutoff_uk": {
+            "title": "Cutoff Uk",
+            "type": "string"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DaySummary"
+            },
+            "title": "Days",
+            "type": "array"
+          },
+          "forecast": {
+            "$ref": "#/components/schemas/ErrorStats"
+          },
+          "lag_scan": {
+            "items": {
+              "$ref": "#/components/schemas/LagPoint"
+            },
+            "title": "Lag Scan",
+            "type": "array"
+          },
+          "lead_hours": {
+            "items": {
+              "type": "number"
+            },
+            "title": "Lead Hours",
+            "type": "array"
+          },
+          "periods": {
+            "title": "Periods",
+            "type": "integer"
+          },
+          "persistence": {
+            "$ref": "#/components/schemas/ErrorStats"
+          },
+          "runs_used_utc": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Runs Used Utc",
+            "type": "array"
+          },
+          "skill_mae": {
+            "description": "1 - MAE(forecast) / MAE(persistence)",
+            "title": "Skill Mae",
+            "type": "number"
+          },
+          "skill_rmse": {
+            "title": "Skill Rmse",
+            "type": "number"
+          }
+        },
+        "required": [
+          "cutoff_uk",
+          "alignment_shift_minutes",
+          "periods",
+          "lead_hours",
+          "runs_used_utc",
+          "forecast",
+          "persistence",
+          "skill_mae",
+          "skill_rmse",
+          "by_lead",
+          "by_level",
+          "buffer",
+          "lag_scan",
+          "days"
+        ],
+        "title": "Accuracy",
+        "type": "object"
+      },
+      "Breakdown": {
+        "additionalProperties": false,
+        "properties": {
+          "hi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hi"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "lo": {
+            "title": "Lo",
+            "type": "number"
+          },
+          "stats": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorStats"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "lo",
+          "hi",
+          "stats"
+        ],
+        "title": "Breakdown",
+        "type": "object"
+      },
+      "BufferRow": {
+        "additionalProperties": false,
+        "properties": {
+          "buffer_mw": {
+            "description": "Fitted on the fit days: buy this much beyond the forecast-implied volume",
+            "title": "Buffer Mw",
+            "type": "number"
+          },
+          "fit_coverage": {
+            "title": "Fit Coverage",
+            "type": "number"
+          },
+          "fit_periods": {
+            "title": "Fit Periods",
+            "type": "integer"
+          },
+          "full_month_buffer_mw": {
+            "description": "Refitted on all delivery days",
+            "title": "Full Month Buffer Mw",
+            "type": "number"
+          },
+          "target_pct": {
+            "description": "Share of half-hours the buffer should cover",
+            "title": "Target Pct",
+            "type": "integer"
+          },
+          "test_coverage": {
+            "description": "Realised coverage on the test days (out of sample)",
+            "title": "Test Coverage",
+            "type": "number"
+          },
+          "test_coverage_high": {
+            "title": "Test Coverage High",
+            "type": "number"
+          },
+          "test_coverage_low": {
+            "description": "95% day-block bootstrap interval, lower bound",
+            "title": "Test Coverage Low",
+            "type": "number"
+          },
+          "test_periods": {
+            "title": "Test Periods",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "target_pct",
+          "buffer_mw",
+          "fit_coverage",
+          "test_coverage",
+          "test_coverage_low",
+          "test_coverage_high",
+          "full_month_buffer_mw",
+          "fit_periods",
+          "test_periods"
+        ],
+        "title": "BufferRow",
+        "type": "object"
+      },
+      "DaySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "delivery_day": {
+            "title": "Delivery Day",
+            "type": "string"
+          },
+          "runs_utc": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Runs Utc",
+            "type": "array"
+          },
+          "sample": {
+            "description": "\"fit\" or \"test\" for the buffer back-test",
+            "title": "Sample",
+            "type": "string"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/ErrorStats"
+          }
+        },
+        "required": [
+          "delivery_day",
+          "sample",
+          "runs_utc",
+          "stats"
+        ],
+        "title": "DaySummary",
+        "type": "object"
+      },
+      "DayView": {
+        "additionalProperties": false,
+        "properties": {
+          "buffer_mw": {
+            "title": "Buffer Mw",
+            "type": "number"
+          },
+          "coverage_pct": {
+            "title": "Coverage Pct",
+            "type": "integer"
+          },
+          "covered_share": {
+            "title": "Covered Share",
+            "type": "number"
+          },
+          "cutoff_uk": {
+            "title": "Cutoff Uk",
+            "type": "string"
+          },
+          "cutoff_utc": {
+            "title": "Cutoff Utc",
+            "type": "string"
+          },
+          "delivery_day": {
+            "title": "Delivery Day",
+            "type": "string"
+          },
+          "max_shortfall_mw": {
+            "title": "Max Shortfall Mw",
+            "type": "integer"
+          },
+          "periods": {
+            "items": {
+              "$ref": "#/components/schemas/Period"
+            },
+            "title": "Periods",
+            "type": "array"
+          },
+          "persistence": {
+            "$ref": "#/components/schemas/Persistence"
+          },
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/RunUsed"
+            },
+            "title": "Runs",
+            "type": "array"
+          },
+          "sample": {
+            "title": "Sample",
+            "type": "string"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/ErrorStats"
+          },
+          "window_utc": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Window Utc",
+            "type": "array"
+          }
+        },
+        "required": [
+          "delivery_day",
+          "sample",
+          "cutoff_uk",
+          "cutoff_utc",
+          "window_utc",
+          "coverage_pct",
+          "buffer_mw",
+          "runs",
+          "persistence",
+          "stats",
+          "max_shortfall_mw",
+          "covered_share",
+          "periods"
+        ],
+        "title": "DayView",
+        "type": "object"
+      },
+      "ErrorStats": {
+        "additionalProperties": false,
+        "properties": {
+          "mae_mw": {
+            "title": "Mae Mw",
+            "type": "number"
+          },
+          "mean_error_mw": {
+            "description": "Mean of forecast minus outturn (bias)",
+            "title": "Mean Error Mw",
+            "type": "number"
+          },
+          "n": {
+            "description": "Number of half-hours",
+            "title": "N",
+            "type": "integer"
+          },
+          "p10_mw": {
+            "title": "P10 Mw",
+            "type": "number"
+          },
+          "p50_mw": {
+            "title": "P50 Mw",
+            "type": "number"
+          },
+          "p90_mw": {
+            "title": "P90 Mw",
+            "type": "number"
+          },
+          "rmse_mw": {
+            "title": "Rmse Mw",
+            "type": "number"
+          },
+          "shortfall_share": {
+            "description": "Share of half-hours where outturn was below forecast",
+            "title": "Shortfall Share",
+            "type": "number"
+          }
+        },
+        "required": [
+          "n",
+          "mean_error_mw",
+          "mae_mw",
+          "rmse_mw",
+          "p10_mw",
+          "p50_mw",
+          "p90_mw",
+          "shortfall_share"
+        ],
+        "title": "ErrorStats",
+        "type": "object"
+      },
+      "GridCell": {
+        "additionalProperties": false,
+        "properties": {
+          "hour_uk": {
+            "title": "Hour Uk",
+            "type": "integer"
+          },
+          "lead_lo": {
+            "title": "Lead Lo",
+            "type": "integer"
+          },
+          "mae_mw": {
+            "title": "Mae Mw",
+            "type": "number"
+          },
+          "mean_error_mw": {
+            "title": "Mean Error Mw",
+            "type": "number"
+          },
+          "n": {
+            "title": "N",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "lead_lo",
+          "hour_uk",
+          "n",
+          "mae_mw",
+          "mean_error_mw"
+        ],
+        "title": "GridCell",
+        "type": "object"
+      },
+      "Health": {
+        "additionalProperties": false,
+        "properties": {
+          "alignment_shift_minutes": {
+            "title": "Alignment Shift Minutes",
+            "type": "integer"
+          },
+          "snapshot_sha256": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Snapshot Sha256",
+            "type": "array"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "version",
+          "alignment_shift_minutes",
+          "snapshot_sha256"
+        ],
+        "title": "Health",
+        "type": "object"
+      },
+      "LagPoint": {
+        "additionalProperties": false,
+        "properties": {
+          "correlation": {
+            "title": "Correlation",
+            "type": "number"
+          },
+          "mae_mw": {
+            "title": "Mae Mw",
+            "type": "number"
+          },
+          "mean_error_mw": {
+            "title": "Mean Error Mw",
+            "type": "number"
+          },
+          "n": {
+            "title": "N",
+            "type": "integer"
+          },
+          "rmse_mw": {
+            "title": "Rmse Mw",
+            "type": "number"
+          },
+          "sd_mw": {
+            "description": "Error spread with the mean removed",
+            "title": "Sd Mw",
+            "type": "number"
+          },
+          "shift_minutes": {
+            "title": "Shift Minutes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "shift_minutes",
+          "n",
+          "mean_error_mw",
+          "mae_mw",
+          "rmse_mw",
+          "sd_mw",
+          "correlation"
+        ],
+        "title": "LagPoint",
+        "type": "object"
+      },
+      "Marker": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "description": "\"gate\" (auction gate closure) or \"run\" (WINDFOR publication slot, UTC)",
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "time_uk": {
+            "title": "Time Uk",
+            "type": "string"
+          }
+        },
+        "required": [
+          "time_uk",
+          "label",
+          "kind",
+          "source"
+        ],
+        "title": "Marker",
+        "type": "object"
+      },
+      "Meta": {
+        "additionalProperties": false,
+        "properties": {
+          "alignment_shift_minutes": {
+            "title": "Alignment Shift Minutes",
+            "type": "integer"
+          },
+          "app_version": {
+            "title": "App Version",
+            "type": "string"
+          },
+          "chart_max_mw": {
+            "description": "Highest outturn or forecast (any run) in the delivery window",
+            "title": "Chart Max Mw",
+            "type": "integer"
+          },
+          "coverage_levels_pct": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Coverage Levels Pct",
+            "type": "array"
+          },
+          "cutoffs_uk": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Cutoffs Uk",
+            "type": "array"
+          },
+          "default_coverage_pct": {
+            "title": "Default Coverage Pct",
+            "type": "integer"
+          },
+          "default_cutoff_uk": {
+            "title": "Default Cutoff Uk",
+            "type": "string"
+          },
+          "delivery_day_convention": {
+            "title": "Delivery Day Convention",
+            "type": "string"
+          },
+          "delivery_days": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Delivery Days",
+            "type": "array"
+          },
+          "delivery_window_utc": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Delivery Window Utc",
+            "type": "array"
+          },
+          "fit_days": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Fit Days",
+            "type": "array"
+          },
+          "markers": {
+            "items": {
+              "$ref": "#/components/schemas/Marker"
+            },
+            "title": "Markers",
+            "type": "array"
+          },
+          "runs": {
+            "$ref": "#/components/schemas/RunsInfo"
+          },
+          "snapshot": {
+            "items": {
+              "$ref": "#/components/schemas/SnapshotFile"
+            },
+            "title": "Snapshot",
+            "type": "array"
+          },
+          "test_days": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Test Days",
+            "type": "array"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "app_version",
+          "timezone",
+          "delivery_day_convention",
+          "delivery_days",
+          "delivery_window_utc",
+          "cutoffs_uk",
+          "default_cutoff_uk",
+          "coverage_levels_pct",
+          "default_coverage_pct",
+          "fit_days",
+          "test_days",
+          "alignment_shift_minutes",
+          "chart_max_mw",
+          "markers",
+          "runs",
+          "snapshot"
+        ],
+        "title": "Meta",
+        "type": "object"
+      },
+      "Period": {
+        "additionalProperties": false,
+        "properties": {
+          "actual_mw": {
+            "title": "Actual Mw",
+            "type": "integer"
+          },
+          "covered": {
+            "description": "Shortfall within the buffer",
+            "title": "Covered",
+            "type": "boolean"
+          },
+          "error_mw": {
+            "title": "Error Mw",
+            "type": "integer"
+          },
+          "forecast_mw": {
+            "title": "Forecast Mw",
+            "type": "integer"
+          },
+          "lead_hours": {
+            "title": "Lead Hours",
+            "type": "number"
+          },
+          "procure_for_mw": {
+            "description": "Forecast minus the buffer: the wind volume the buffer plans on",
+            "title": "Procure For Mw",
+            "type": "number"
+          },
+          "publish_time_utc": {
+            "description": "Run whose value is used for this half-hour",
+            "title": "Publish Time Utc",
+            "type": "string"
+          },
+          "settlement_date": {
+            "description": "Settlement date (UK) of the half-hour",
+            "title": "Settlement Date",
+            "type": "string"
+          },
+          "settlement_period": {
+            "description": "Settlement period, 1-based (46-50 on clock-change days)",
+            "title": "Settlement Period",
+            "type": "integer"
+          },
+          "source_hour_utc": {
+            "description": "WINDFOR startTime of the hourly value applied to this half-hour",
+            "title": "Source Hour Utc",
+            "type": "string"
+          },
+          "start_utc": {
+            "title": "Start Utc",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start_utc",
+          "settlement_date",
+          "settlement_period",
+          "forecast_mw",
+          "actual_mw",
+          "error_mw",
+          "publish_time_utc",
+          "source_hour_utc",
+          "lead_hours",
+          "procure_for_mw",
+          "covered"
+        ],
+        "title": "Period",
+        "type": "object"
+      },
+      "Persistence": {
+        "additionalProperties": false,
+        "properties": {
+          "period_start_utc": {
+            "title": "Period Start Utc",
+            "type": "string"
+          },
+          "publish_time_utc": {
+            "title": "Publish Time Utc",
+            "type": "string"
+          },
+          "value_mw": {
+            "title": "Value Mw",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value_mw",
+          "period_start_utc",
+          "publish_time_utc"
+        ],
+        "title": "Persistence",
+        "type": "object"
+      },
+      "Problem": {
+        "additionalProperties": false,
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detail"
+        ],
+        "title": "Problem",
+        "type": "object"
+      },
+      "RunUsed": {
+        "additionalProperties": false,
+        "properties": {
+          "periods": {
+            "title": "Periods",
+            "type": "integer"
+          },
+          "publish_time_utc": {
+            "title": "Publish Time Utc",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publish_time_utc",
+          "periods"
+        ],
+        "title": "RunUsed",
+        "type": "object"
+      },
+      "RunsInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          },
+          "off_schedule": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Off Schedule",
+            "type": "array"
+          },
+          "regular_slots_utc": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Regular Slots Utc",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "regular_slots_utc",
+          "missing",
+          "off_schedule"
+        ],
+        "title": "RunsInfo",
+        "type": "object"
+      },
+      "SnapshotFile": {
+        "additionalProperties": false,
+        "properties": {
+          "dataset": {
+            "title": "Dataset",
+            "type": "string"
+          },
+          "downloaded_utc": {
+            "title": "Downloaded Utc",
+            "type": "string"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "rows": {
+            "title": "Rows",
+            "type": "integer"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "dataset",
+          "file",
+          "sha256",
+          "rows",
+          "url",
+          "downloaded_utc"
+        ],
+        "title": "SnapshotFile",
+        "type": "object"
+      },
+      "Vintages": {
+        "additionalProperties": false,
+        "properties": {
+          "alignment_shift_minutes": {
+            "title": "Alignment Shift Minutes",
+            "type": "integer"
+          },
+          "by_hour_lead_range_h": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "By Hour Lead Range H",
+            "type": "array"
+          },
+          "by_hour_uk": {
+            "items": {
+              "$ref": "#/components/schemas/Breakdown"
+            },
+            "title": "By Hour Uk",
+            "type": "array"
+          },
+          "by_lead": {
+            "items": {
+              "$ref": "#/components/schemas/Breakdown"
+            },
+            "title": "By Lead",
+            "type": "array"
+          },
+          "effect_leads_h": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Effect Leads H",
+            "type": "array"
+          },
+          "grid": {
+            "items": {
+              "$ref": "#/components/schemas/GridCell"
+            },
+            "title": "Grid",
+            "type": "array"
+          },
+          "grid_lead_bucket_h": {
+            "title": "Grid Lead Bucket H",
+            "type": "integer"
+          },
+          "hour_effect_mw": {
+            "title": "Hour Effect Mw",
+            "type": "number"
+          },
+          "lead_effect_mw": {
+            "title": "Lead Effect Mw",
+            "type": "number"
+          },
+          "pairs": {
+            "title": "Pairs",
+            "type": "integer"
+          },
+          "runs": {
+            "title": "Runs",
+            "type": "integer"
+          },
+          "short_lead_lag_scan": {
+            "items": {
+              "$ref": "#/components/schemas/LagPoint"
+            },
+            "title": "Short Lead Lag Scan",
+            "type": "array"
+          }
+        },
+        "required": [
+          "alignment_shift_minutes",
+          "pairs",
+          "runs",
+          "by_lead",
+          "by_hour_uk",
+          "by_hour_lead_range_h",
+          "grid",
+          "grid_lead_bucket_h",
+          "lead_effect_mw",
+          "hour_effect_mw",
+          "effect_leads_h",
+          "short_lead_lag_scan"
+        ],
+        "title": "Vintages",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "summary": "GB wind forecast at the day-ahead decision cutoff vs outturn, January 2026 (Elexon WINDFOR, FUELHH)",
+    "title": "Wind at cutoff",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "ops"
+        ]
+      }
+    },
+    "/api/v1/accuracy": {
+      "get": {
+        "description": "Error statistics, breakdowns, persistence skill, buffer back-test and lag scan at one cutoff.",
+        "operationId": "accuracy_api_v1_accuracy_get",
+        "parameters": [
+          {
+            "description": "Decision cutoff, UK clock time on the day before delivery (03:00-16:00, 30-minute steps)",
+            "in": "query",
+            "name": "cutoff",
+            "required": false,
+            "schema": {
+              "default": "09:00",
+              "description": "Decision cutoff, UK clock time on the day before delivery (03:00-16:00, 30-minute steps)",
+              "pattern": "^\\d{2}:\\d{2}$",
+              "title": "Cutoff",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accuracy"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Cutoff or coverage outside the allowed values"
+          }
+        },
+        "summary": "Accuracy",
+        "tags": [
+          "data"
+        ]
+      }
+    },
+    "/api/v1/days/{delivery_day}": {
+      "get": {
+        "description": "Forecast at the cutoff vs outturn for each half-hour of one delivery day (23:00-23:00 UK).",
+        "operationId": "day_view_api_v1_days__delivery_day__get",
+        "parameters": [
+          {
+            "description": "Delivery date (YYYY-MM-DD)",
+            "in": "path",
+            "name": "delivery_day",
+            "required": true,
+            "schema": {
+              "description": "Delivery date (YYYY-MM-DD)",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Delivery Day",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Decision cutoff, UK clock time on the day before delivery (03:00-16:00, 30-minute steps)",
+            "in": "query",
+            "name": "cutoff",
+            "required": false,
+            "schema": {
+              "default": "09:00",
+              "description": "Decision cutoff, UK clock time on the day before delivery (03:00-16:00, 30-minute steps)",
+              "pattern": "^\\d{2}:\\d{2}$",
+              "title": "Cutoff",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Buffer target, % of half-hours",
+            "in": "query",
+            "name": "coverage",
+            "required": false,
+            "schema": {
+              "default": 90,
+              "description": "Buffer target, % of half-hours",
+              "title": "Coverage",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Unknown delivery day"
+          },
+          "422": {
+            "description": "Cutoff or coverage outside the allowed values"
+          }
+        },
+        "summary": "Day View",
+        "tags": [
+          "data"
+        ]
+      }
+    },
+    "/api/v1/meta": {
+      "get": {
+        "description": "Study design: delivery days, selectable cutoffs, markers for the decision timeline, data provenance.",
+        "operationId": "meta_api_v1_meta_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Meta",
+        "tags": [
+          "data"
+        ]
+      }
+    },
+    "/api/v1/vintages": {
+      "get": {
+        "description": "Errors across every forecast run, separating lead time from hour of day (cutoff-independent).",
+        "operationId": "vintages_api_v1_vintages_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vintages"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Vintages",
+        "tags": [
+          "data"
+        ]
+      }
+    }
+  }
+}

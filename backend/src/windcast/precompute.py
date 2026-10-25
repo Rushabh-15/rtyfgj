@@ -24,9 +24,9 @@ from typing import Any
 from windcast import __version__, analysis, contracts, study
 from windcast.evaluation import ActualIndex, DayResult, all_periods, evaluate_cutoff
 from windcast.metrics import ErrorStats, error_stats
-from windcast.selection import ALLOWED_SHIFTS_MINUTES
+from windcast.selection import ALLOWED_SHIFTS_MINUTES, is_forward_looking
 from windcast.snapshot import Snapshot
-from windcast.timeutils import delivery_day_bounds, delivery_day_periods, format_hhmm, iso_z
+from windcast.timeutils import HOUR, LONDON, delivery_day_bounds, delivery_day_periods, format_hhmm, iso_z
 
 SCHEMA_VERSION = 1
 
@@ -181,6 +181,19 @@ def actuals_table(actuals: ActualIndex) -> dict[str, Any]:
     return {"schema_version": SCHEMA_VERSION, "days": days}
 
 
+def chart_max_mw(snapshot: Snapshot) -> int:
+    """Highest outturn, or forecast from any run, in the delivery window: one fixed scale for every day and cutoff."""
+    first, _ = delivery_day_bounds(study.FIRST_DELIVERY_DAY)
+    _, last = delivery_day_bounds(study.LAST_DELIVERY_DAY)
+    values = [a.generation_mw for a in snapshot.actuals if first <= a.start_time < last]
+    values += [
+        f.generation_mw
+        for f in snapshot.forecasts
+        if is_forward_looking(f) and first - HOUR <= f.start_time < last + HOUR
+    ]
+    return max(values)
+
+
 def meta_table(snapshot: Snapshot) -> dict[str, Any]:
     cadence = contracts.run_cadence(snapshot)
     first, _ = delivery_day_bounds(study.FIRST_DELIVERY_DAY)
@@ -188,8 +201,17 @@ def meta_table(snapshot: Snapshot) -> dict[str, Any]:
     markers = [
         {"time_uk": m.time_uk, "label": m.label, "kind": m.kind, "source": m.source} for m in study.GATE_CLOSURES
     ]
+    # Run slots are UTC in the data; markers sit on the UK-time decision timeline (identical in January).
+    reference_day = study.FIRST_DELIVERY_DAY - dt.timedelta(days=1)
     markers += [
-        {"time_uk": slot, "label": f"WINDFOR run {slot} UTC", "kind": "run", "source": "data"}
+        {
+            "time_uk": format_hhmm(
+                dt.datetime.combine(reference_day, dt.time.fromisoformat(slot), tzinfo=dt.UTC).astimezone(LONDON).time()
+            ),
+            "label": f"WINDFOR run published {slot} UTC",
+            "kind": "run",
+            "source": "data",
+        }
         for slot in cadence.regular_slots_utc
     ]
     return {
@@ -206,6 +228,7 @@ def meta_table(snapshot: Snapshot) -> dict[str, Any]:
         "fit_days": [study.FIT_DAYS[0].isoformat(), study.FIT_DAYS[-1].isoformat()],
         "test_days": [study.TEST_DAYS[0].isoformat(), study.TEST_DAYS[-1].isoformat()],
         "alignments_available": list(ALLOWED_SHIFTS_MINUTES),
+        "chart_max_mw": chart_max_mw(snapshot),
         "markers": sorted(markers, key=lambda m: m["time_uk"]),
         "runs": {
             "total": cadence.runs,

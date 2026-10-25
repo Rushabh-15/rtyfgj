@@ -87,6 +87,14 @@ def cutoff_instant(delivery_day: dt.date, cutoff: dt.time) -> dt.datetime:
     return uk_local(delivery_day - DAY, cutoff)
 
 
+def settlement_period(period_start: dt.datetime) -> tuple[dt.date, int]:
+    """Settlement date and period (1-based, 46-50 per day) of the half-hour starting ``period_start``."""
+    require_half_hour(period_start)
+    local_date = period_start.astimezone(LONDON).date()
+    midnight = dt.datetime.combine(local_date, dt.time(0), tzinfo=LONDON).astimezone(UTC)
+    return local_date, int((period_start - midnight) / HALF_HOUR) + 1
+
+
 def parse_hhmm(value: str) -> dt.time:
     """Parse ``HH:MM`` (24-hour) into a ``time``; seconds are not allowed."""
     if len(value) != 5 or value[2] != ":":

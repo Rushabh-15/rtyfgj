@@ -1,0 +1,109 @@
+/* Design tokens. Colours are roles, not values: charts and components reference these names only. */
+
+:root {
+  color-scheme: light;
+  --page: #eef2f5;
+  --surface: #fbfcfd;
+  --surface-sunk: #f2f5f8;
+  --ink: #10212f;
+  --ink-2: #485766;
+  --muted: #6f7c89;
+  --grid: #dce3e9;
+  --axis: #b8c3cc;
+  --border: rgba(16, 33, 47, 0.12);
+  --focus: #2a78d6;
+
+  /* Data roles (dataviz reference palette, slot 1) */
+  --forecast: #2a78d6;
+  --forecast-wash: rgba(42, 120, 214, 0.12);
+  --outturn: #10212f;
+  --band: rgba(16, 33, 47, 0.045);
+
+  /* The one bold element: the decision cutoff. Used for nothing else. */
+  --signal: #d9530b;
+  --signal-wash: rgba(217, 83, 11, 0.1);
+
+  /* Sequential blue ramp, light to dark (magnitude) */
+  --seq-100: #cde2fb;
+  --seq-200: #9ec5f4;
+  --seq-300: #6da7ec;
+  --seq-400: #3987e5;
+  --seq-500: #256abf;
+  --seq-600: #184f95;
+  --seq-700: #0d366b;
+
+  --font-ui: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-figure: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+
+  /* Type scale (1.25 ratio from 16px) */
+  --t-12: 0.75rem;
+  --t-13: 0.8125rem;
+  --t-14: 0.875rem;
+  --t-16: 1rem;
+  --t-20: 1.25rem;
+  --t-25: 1.5625rem;
+  --t-31: 1.953rem;
+  --t-39: 2.441rem;
+  --t-49: 3.052rem;
+  --t-61: 3.815rem;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --gutter: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0e151c;
+    --surface: #151e27;
+    --surface-sunk: #1b2631;
+    --ink: #e6edf3;
+    --ink-2: #a7b4c0;
+    --muted: #8794a0;
+    --grid: #25313c;
+    --axis: #3a4753;
+    --border: rgba(255, 255, 255, 0.1);
+    --focus: #6da7ec;
+    --forecast: #3987e5;
+    --forecast-wash: rgba(57, 135, 229, 0.18);
+    --outturn: #e6edf3;
+    --band: rgba(255, 255, 255, 0.04);
+    --signal: #d95926;
+    --signal-wash: rgba(217, 89, 38, 0.16);
+    --seq-100: #1c2f45;
+    --seq-200: #184f95;
+    --seq-300: #1c5cab;
+    --seq-400: #256abf;
+    --seq-500: #3987e5;
+    --seq-600: #6da7ec;
+    --seq-700: #9ec5f4;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0e151c;
+  --surface: #151e27;
+  --surface-sunk: #1b2631;
+  --ink: #e6edf3;
+  --ink-2: #a7b4c0;
+  --muted: #8794a0;
+  --grid: #25313c;
+  --axis: #3a4753;
+  --border: rgba(255, 255, 255, 0.1);
+  --focus: #6da7ec;
+  --forecast: #3987e5;
+  --forecast-wash: rgba(57, 135, 229, 0.18);
+  --outturn: #e6edf3;
+  --band: rgba(255, 255, 255, 0.04);
+  --signal: #d95926;
+  --signal-wash: rgba(217, 89, 38, 0.16);
+  --seq-100: #1c2f45;
+  --seq-200: #184f95;
+  --seq-300: #1c5cab;
+  --seq-400: #256abf;
+  --seq-500: #3987e5;
+  --seq-600: #6da7ec;
+  --seq-700: #9ec5f4;
+}

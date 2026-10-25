@@ -71,6 +71,11 @@ addopts = "-q --strict-markers"
 markers = [
     "slow: longer property tests (deselect with -m 'not slow')",
 ]
+filterwarnings = [
+    "error",
+    # Starlette's test client works with httpx but warns about a future transport change.
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated:starlette.exceptions.StarletteDeprecationWarning",
+]
 
 [tool.coverage.run]
 source = ["windcast"]

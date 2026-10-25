@@ -1,4 +1,4 @@
-"""``windcast`` command line: check, precompute, report, validate, ingest."""
+"""``windcast`` command line: check, precompute, report, validate, openapi, fixtures, ingest."""
 
 from __future__ import annotations
 
@@ -50,6 +50,31 @@ def _validate(args: argparse.Namespace) -> int:
     return 0 if ok or not args.strict else 1
 
 
+def _openapi(args: argparse.Namespace) -> int:
+    import json
+
+    from windcast.api import app
+
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(app.openapi(), indent=2, sort_keys=True) + "\n")
+    print(f"wrote {out}")
+    return 0
+
+
+def _fixtures(args: argparse.Namespace) -> int:
+    import dataclasses
+
+    from windcast.api import Store
+    from windcast.fixtures import write_fixtures
+
+    # Fixtures are always the default alignment, whatever the environment says.
+    settings = dataclasses.replace(load_settings(), alignment_shift_minutes=0)
+    written = write_fixtures(Store(settings), Path(args.out))
+    print(f"wrote {len(written)} fixtures to {args.out}")
+    return 0
+
+
 def _ingest(args: argparse.Namespace) -> int:
     from windcast.ingest import compare_manifests, pull
 
@@ -79,6 +104,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--out", default="../docs/validation.md")
     p.add_argument("--strict", action="store_true", help="exit 1 if any automated check fails")
     p.set_defaults(func=_validate)
+    p = sub.add_parser("openapi", help="write the OpenAPI schema the frontend types are generated from")
+    p.add_argument("--out", default="../frontend/src/api/openapi.json")
+    p.set_defaults(func=_openapi)
+    p = sub.add_parser("fixtures", help="write API responses the frontend tests run against")
+    p.add_argument("--out", default="../frontend/src/test/fixtures")
+    p.set_defaults(func=_fixtures)
     p = sub.add_parser("ingest", help="download the snapshot window again from Elexon")
     p.add_argument("--out", required=True)
     p.add_argument("--compare", help="manifest.json to compare hashes with")
